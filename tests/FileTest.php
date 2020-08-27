@@ -42,8 +42,7 @@ class FileTest extends TestCase
         $this->assertTrue(File::exists($fileName));
         unlink($fileName);
 
-        $this->expectException(Exception::class);
-        File::exists('unMauvaisFichier.txt');
+        $this->assertFalse(File::exists('unMauvaisFichier.txt'));
     }
 
     

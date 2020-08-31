@@ -42,6 +42,26 @@ class QueryBuilder {
         return $this;
     }
 
+    public function generate() {
+        $stringQuery = "SELECT ";
+        foreach ($this->select as $col) {
+            $stringQuery .= " $col";
+            if (array_key_exists($col, $this->selectAliases)) {
+                $stringQuery .= " AS " . $this->selectAliases[$col];
+            }
+        }
+
+        $stringQuery .= " FROM ";
+        foreach ($this->from as $table) {
+            $stringQuery .= " $table";
+            if (array_key_exists($table, $this->fromAliases)) {
+                $stringQuery .= " " . $this->fromAliases[$table];
+            }            
+        }
+
+        return $stringQuery;
+    }
+
     public function getSelect() {
         return $this->select;
     }

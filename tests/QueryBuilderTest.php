@@ -42,12 +42,29 @@ class QueryBuilderTest extends TestCase
 
     public function testFromAliases() {
         $query = new QueryBuilder();
-        $this->assertInstanceOf(QueryBuilder::class, $query->select('*')->from('table_a', 'a'));
+        $this->assertInstanceOf(QueryBuilder::class, $query->from('table_a', 'a'));
         $this->assertContains('table_a', $query->getFrom());
         $this->assertArrayHasKey('table_a', $query->getFromAliases());
         $this->assertEquals('a', $query->getFromAliases()['table_a']);
         $query = null;
 
+    }
+
+    public function testGenerate() {
+        $query = new QueryBuilder();
+        $query
+            ->select('*')
+            ->from('table_a', 'a');
+
+        $stringQuery = "SELECT * 
+                         FROM table_a a";
+        
+        $this->assertEquals(self::manageString($stringQuery), self::manageString($query->generate()));
+
+    }
+
+    private static function manageString($string) {
+        return str_replace(["\n", " "], "", $string);
     }
 
 }
